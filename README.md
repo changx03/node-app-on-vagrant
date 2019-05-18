@@ -150,6 +150,12 @@ yarn
 yarn start
 ```
 
+Set environment variable on Utuntu
+
+```
+DEBUG=my-node-app:server yarn start
+```
+
 Open another SSL connection
 
 ```
