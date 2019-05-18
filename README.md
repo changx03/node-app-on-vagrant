@@ -351,6 +351,12 @@ Testing current configuration
 sudo nginx -t
 ```
 
+Restart nginx
+
+```bash
+sudo systemctl restart nginx
+```
+
 #### Testing with Apache Bench
 
 ```
