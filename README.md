@@ -325,7 +325,7 @@ server {
 }
 ```
 
-To map another url, e.g. `http://http://dev.mynodeapp.com/app2`
+To map another url, e.g. `http://dev.mynodeapp.com/app2`
 
 ```
 server {
