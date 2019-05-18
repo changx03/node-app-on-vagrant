@@ -78,7 +78,7 @@ In `hosts` file, add line `55.55.55.55 dev.mynodeapp.com` to the bottom
 
 ## Install Node on VM
 
-(Tutorial)[https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04]
+[Tutorial](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04)
 
 From VM:
 
