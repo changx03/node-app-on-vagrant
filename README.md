@@ -28,6 +28,7 @@ From the empty `vagrant` folder
 # install Vagrant box
 # https://app.vagrantup.com/boxes/
 vagrant box add ubuntu/xenial64
+vagrant init ubuntu/xenial64
 vagrant up
 vagrant status
 vagrant ssh
