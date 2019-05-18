@@ -360,5 +360,5 @@ sudo systemctl restart nginx
 #### Testing with Apache Bench
 
 ```
-ab -c 40 -n 1000 http://55.55.55.55
+ab -c 40 -n 1000 http://dev.mynodeapp.com/
 ```
