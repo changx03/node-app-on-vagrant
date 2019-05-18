@@ -14,7 +14,7 @@ Tested on 18/05/2019
 [Hogan.js](http://twitter.github.io/hogan.js/) is the mustache syntax from twitter, very straight forward.
 
 ```bash
-express --hogan my-node-app
+express --view=hogan my-node-app
 ```
 
 ## Starting virtual machine
