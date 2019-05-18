@@ -7,5 +7,6 @@
   <body>
     <h1>{{ title }}</h1>
     <p>Welcome to {{ title }}</p>
+    <p>My current NODE_ENV is {{ nodeEnv }}</p>
   </body>
 </html>

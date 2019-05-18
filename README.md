@@ -175,7 +175,7 @@ pm2 save
 # generate startup script
 pm2 startup systemd
 
-# remove
+# remove from startup
 pm2 unstartup systemd
 
 # check systemctl
@@ -187,15 +187,94 @@ PM2 commands
 ```bash
 pm2 stop <app_name_or_id>
 pm2 restart <app_name_or_id>
+pm2 delete www
+pm2 delete all
 pm2 info <app_name_or_id>
 
 # show process monitor
 pm2 monit
 ```
 
+#### Run PM2 with a configuration file
+
+This is the easiest way to use `process.env` environment variables
+
+create a `pm2.config.js` file under project root directory
+
+```bash
+touch pm2.config.js
+vim pm2.config.js
+```
+
+```javascript
+module.exports = {
+  apps: [
+    {
+      name: 'my-node-app',
+      script: './bin/www',
+      watch: true,
+      env: {
+        PORT: 3000,
+        NODE_ENV: 'production'
+      },
+      env_dev: {
+        PORT: 3000,
+        NODE_ENV: 'development'
+      }
+    }
+  ]
+}
+```
+
+- `pm2 start pm2.config.js` will start the app with default `env`
+- `pm2 start pm2.config.js --env dev` will start the app in dev mode
+- **Don't forget `pm2 save`!!!**
+
+#### Running Node.js server in Cluster Mode
+
+Node is running `single core` by default.
+
+Create `cluster.js` file:
+
+```javascript
+const cluster = require('cluster')
+
+if (cluster.isMaster) {
+  const cpuCount = require('os').cpus().length
+
+  for (let i = 0; i < cpuCount; i += 1) {
+    cluster.fork()
+  }
+
+  cluster.on('exit', function() {
+    cluster.fork()
+  })
+} else {
+  require('./bin/www')
+}
+```
+
+However, we can simply run multiple node instance in PM2.
+
+Add these configuration to `pm2.config.js` file
+
+```javascript
+{
+  apps : [{
+    // ...
+    instances : "max",
+    exec_mode : "cluster"
+  }]
+}
+```
+
+Save the change, in `pm2 list` will show 2 instance in vagrant VM (2 core be default).
+
 ### Set Up Nginx as a Reverse Proxy Server
 
 ```bash
+sudo apt-get update && sudo apt-get install nginx -y
+
 cd /etc/nginx/sites-available
 sudo vim default
 ```
@@ -207,7 +286,23 @@ sudo vim default
 - `:q`: quit (`:q!`: quit without save; `:wq`: write and quit)
 - `:w`: write
 
-Add proxy configuration into `server` block in `default` file
+#### Ningx setup
+
+In `/etc/nginx/nginx.conf`
+
+The # of cores your CPU is running
+
+```
+worker_processes: auto;
+```
+
+Check the # of cores
+
+```bash
+cat /proc/cpuinfo
+```
+
+Add proxy configuration into `server` block in `/etc/nginx/sites-available/default` file
 
 ```
 server {
@@ -247,4 +342,10 @@ Testing current configuration
 
 ```bash
 sudo nginx -t
+```
+
+#### Testing with Apache Bench
+
+```
+ab -c 40 -n 1000 http://55.55.55.55
 ```
